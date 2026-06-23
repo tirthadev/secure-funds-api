@@ -94,4 +94,4 @@ Time spent: ~2 hours.
 
 ## AI tools and prompts used
 
-AI assistance was used through ChatGPT/Codex to scaffold the Symfony project, implement the transfer domain, write tests, and prepare documentation. Prompt used: the assignment text requesting a secure Symfony/MySQL/Redis funds-transfer API with production-ready practices, tests, and README setup instructions.
+AI assistance was used through ChatGPT/Codex to scaffold the Symfony project, implement the transfer domain, write tests, and prepare documentation.
