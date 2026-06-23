@@ -1,0 +1,43 @@
+services:
+  app:
+    build: .
+    command: php -S 0.0.0.0:8000 -t public
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      APP_ENV: dev
+      APP_SECRET: change-me-in-production
+      API_KEY: dev-secret
+      DATABASE_URL: mysql://app:ChangeMe@database:3306/funds_api?serverVersion=8.4.0&charset=utf8mb4
+      REDIS_DSN: redis://redis:6379
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+  database:
+    image: mysql:${MYSQL_VERSION:-8.4}
+    environment:
+      MYSQL_DATABASE: funds_api
+      MYSQL_PASSWORD: ChangeMe
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: app
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - database_data:/var/lib/mysql:rw
+
+  redis:
+    image: redis:7.4-alpine
+    command: redis-server --save "" --appendonly no
+    ports:
+      - "6379:6379"
+
+volumes:
+  database_data:
